@@ -15,21 +15,21 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: nvidia-driver-installer
+  name: nvidia-driver-installer-custom
   namespace: kube-system
   labels:
-    k8s-app: nvidia-driver-installer
+    k8s-app: nvidia-driver-installer-custom
 spec:
   selector:
     matchLabels:
-      k8s-app: nvidia-driver-installer
+      k8s-app: nvidia-driver-installer-custom
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        name: nvidia-driver-installer
-        k8s-app: nvidia-driver-installer
+        name: nvidia-driver-installer-custom
+        k8s-app: nvidia-driver-installer-custom
     spec:
       priorityClassName: system-node-critical
       affinity:
@@ -39,8 +39,6 @@ spec:
             - matchExpressions:
               - key: cloud.google.com/gke-accelerator
                 operator: Exists
-              - key: cloud.google.com/gke-gpu-driver-version
-                operator: DoesNotExist
       tolerations:
       - operator: "Exists"
       volumes:
@@ -60,7 +58,7 @@ spec:
         hostPath:
           path: /var/lib/nvidia/
       initContainers:
-      - image: europe-west1-docker.pkg.dev/hyperscale-dev-rru1/hyperscale/additional-lib:0.0.3-0
+      - image: europe-west1-docker.pkg.dev/civil-victory-381915/docker-server/extra-libs:mike
         name: nvidia-additional-installer
         resources:
           requests:
@@ -83,20 +81,6 @@ spec:
           mountPath: /root
         - name: var-lib-nvidia
           mountPath: /var/lib/nvidia/
-      - image: gke-nvidia-installer:fixed
-        name: nvidia-driver-installer
-        resources:
-          requests:
-            cpu: 150m
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - name: boot
-          mountPath: /boot
-        - name: dev
-          mountPath: /dev
-        - name: root-mount
-          mountPath: /root
       containers:
       - image: "gcr.io/google-containers/pause:2.0"
         name: pause

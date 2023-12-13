@@ -1,0 +1,7 @@
+FROM nvidia/cuda:11.4.3-base-ubuntu20.04
+RUN apt-get update
+RUN  apt install -y --no-install-recommends libnvidia-cfg1-470=470.161.03-0ubuntu1 libnvidia-encode-470=470.161.03-0ubuntu1 libnvidia-compute-470=470.161.03-0ubuntu1 libnvidia-decode-470=470.161.03-0ubuntu1
+
+RUN  apt install -y --no-install-recommends xserver-xorg-video-nvidia-470=470.161.03-0ubuntu1
+
+

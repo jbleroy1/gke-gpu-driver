@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-test2
+spec:
+  containers:
+    - name: nvidia
+      securityContext:
+        privileged: true
+      image: nvidia/cuda:11.4.3-base-ubuntu20.04
+      args:
+        - "-c"
+        - 'find /dev/dri ; find / -iname "libnvidia*.so" ; find / -iname "*nvidia*glx*" ; tail -f /dev/null'
+      command:
+        - /bin/bash
+      imagePullPolicy: Always
+      resources:
+        limits:
+          nvidia.com/gpu: 1

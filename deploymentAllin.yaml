@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scale-deployment
+  labels:
+    app: gpu-test-scale
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: gpu-test-scale
+  template:
+    metadata:
+      labels:
+        app: gpu-test-scale
+    spec:
+      containers:
+      - name: gpu-test-app
+        securityContext:
+          privileged: true
+        image: europe-west1-docker.pkg.dev/civil-victory-381915/docker-server/allinapp:1.0
+        args:
+          - "-c"
+          - 'find /dev/dri ; find / -iname "libnvidia*.so" ; find / -iname "*nvidia*glx*" ; tail -f /dev/null'
+        command:
+          - /bin/bash
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        

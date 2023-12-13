@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-deployment
+  labels:
+    app: gpu-test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gpu-test
+  template:
+    metadata:
+      labels:
+        app: gpu-test
+    spec:
+      containers:
+      - name: gpu-test-app
+        securityContext:
+          privileged: true
+        image: nvidia/cuda:11.4.3-base-ubuntu20.04
+        args:
+          - "-c"
+          - 'find /dev/dri ; find / -iname "libnvidia*.so" ; find / -iname "*nvidia*glx*" ; tail -f /dev/null'
+        command:
+          - /bin/bash
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        
