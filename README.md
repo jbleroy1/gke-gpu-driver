@@ -6,6 +6,12 @@
 docker build -t additional-lib .
 ``````
 
+## Build application image with nvidia driver in it
+
+```bash
+docker build -t my-app-all-driver -f DockerfileLibsin.
+``````
+
 ## Deploy the daemon set
 
 In [ds-preload.yaml](ds-preload.yaml) change [line number 74](ds-preload.yaml#L74) and set the name of the docker image you built and pushed in Artifact Registry previously.
