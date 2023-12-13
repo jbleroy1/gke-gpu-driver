@@ -1,6 +1,6 @@
 # container-engine-accelerators/nvidia-driver-installer/ubuntu
 
-## Build the image
+## Build the driver installation image
 
 ```bash
 docker build -t additional-lib .
